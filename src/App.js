@@ -46,7 +46,7 @@ export default function App() {
         setError("");
         const searchQuery = query === "" ? "spider" : query;
         const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${key}&s=${searchQuery}`,
+          `https://www.omdbapi.com/?apikey=${key}&s=${searchQuery}`,
           { signal: controller.signal }
         );
         if (!res.ok) throw new Error("❌ Failed to fetch movies");
