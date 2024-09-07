@@ -19,7 +19,7 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [watched, setWatched] = useState(function () {
     const storedValue = localStorage.getItem("watched");
-    return JSON.parse(storedValue);
+    return storedValue ? JSON.parse(storedValue) : [];
   });
   const [error, setError] = useState("");
   const [isLoadingMovieFetch, setLoadingMovieFetch] = useState(false);
