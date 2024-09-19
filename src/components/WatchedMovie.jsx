@@ -1,5 +1,4 @@
 function WatchedMovie({ movie, handleRemoveWatched }) {
-  console.log(movie);
   return (
     <>
       <li>

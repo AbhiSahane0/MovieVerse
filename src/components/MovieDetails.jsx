@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import StarRating from "./StarRating";
 import Loading from "./Loading";
@@ -20,6 +20,8 @@ function MovieDetails({
   const givenRating = watched.find(
     (movie) => movie.imdbID === selectedMovieId
   )?.userRating;
+
+  const timeRated = useRef(0);
 
   const {
     Title: title,
@@ -47,6 +49,10 @@ function MovieDetails({
     handleSetWatch(detail);
     closeMovieDetail();
   }
+
+  useEffect(() => {
+    if (userRating) timeRated.current = timeRated.current + 1;
+  });
 
   useEffect(() => {
     async function getMovieDetails() {
