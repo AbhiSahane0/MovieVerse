@@ -45,14 +45,15 @@ function MovieDetails({
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
+      userRatingAttempts: timeRated,
     };
     handleSetWatch(detail);
     closeMovieDetail();
   }
 
   useEffect(() => {
-    if (userRating) timeRated.current = timeRated.current + 1;
-  });
+    if (userRating) timeRated.current++;
+  }, [userRating]);
 
   useEffect(() => {
     async function getMovieDetails() {
