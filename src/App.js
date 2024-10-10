@@ -11,18 +11,14 @@ import WatchedMoviesList from "./components/WatchedMoviesList";
 import Loading from "./components/Loading";
 import ErrorMessage from "./components/ErrorMessage";
 import MovieDetails from "./components/MovieDetails.jsx";
-
-const key = "141fd5e2";
+import { useMovies } from "./components/useMovies.js";
 
 export default function App() {
-  const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState("");
   const [watched, setWatched] = useState(function () {
     const storedValue = localStorage.getItem("watched");
     return storedValue ? JSON.parse(storedValue) : [];
   });
-  const [error, setError] = useState("");
-  const [isLoadingMovieFetch, setLoadingMovieFetch] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
   function handleSetQuery(value) {
@@ -41,41 +37,12 @@ export default function App() {
     setWatched((watched) => watched.filter((curr) => curr.imdbID !== id));
   }
 
+  // Custom hook
+  const { movies, isLoadingMovieFetch, error } = useMovies(query);
+
   useEffect(() => {
     localStorage.setItem("watched", JSON.stringify(watched));
   }, [watched]);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const fetchMovies = async () => {
-      try {
-        setLoadingMovieFetch(true);
-        setError("");
-        const searchQuery = query === "" ? "spider" : query;
-        const res = await fetch(
-          `https://www.omdbapi.com/?apikey=${key}&s=${searchQuery}`,
-          { signal: controller.signal }
-        );
-        if (!res.ok) throw new Error("❌ Failed to fetch movies");
-
-        const data = await res.json();
-        if (data.Response === "False") throw new Error("Movie not found");
-
-        setMovies(data.Search);
-        setError("");
-      } catch (err) {
-        if (err.name !== "AbortError") setError(err.message);
-      } finally {
-        setLoadingMovieFetch(false);
-      }
-    };
-    closeMovieDetail();
-    fetchMovies();
-
-    return function () {
-      controller.abort();
-    };
-  }, [query]);
 
   return (
     <>
