@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Main from "./components/Main";
 import Logo from "./components/Logo";
@@ -12,6 +12,7 @@ import Loading from "./components/Loading";
 import ErrorMessage from "./components/ErrorMessage";
 import MovieDetails from "./components/MovieDetails.jsx";
 import { useMovies } from "./components/useMovies.js";
+import { useLocalStorage } from "./components/useLocalStorage.js";
 
 export default function App() {
   const [query, setQuery] = useState("");
@@ -40,9 +41,7 @@ export default function App() {
   // Custom hook
   const { movies, isLoadingMovieFetch, error } = useMovies(query);
 
-  useEffect(() => {
-    localStorage.setItem("watched", JSON.stringify(watched));
-  }, [watched]);
+  useLocalStorage(watched);
 
   return (
     <>
